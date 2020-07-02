@@ -1,0 +1,69 @@
+1. Write a single command that will make existing file secret.txt readable and writeable only for the user, readable only for the group and with no permission for the rest
+
+chmod 640
+
+2. Write a command that can find all of the files which have been accessed within the last 30 days
+
+find . -atime -30
+
+3. Write a command to find all of the files which have been modified after a certain file was modified in a given folder
+
+find . -newer ./examplefile 
+
+4. Find the biggest file on the file system
+
+du -Sh | sort -rh | head -n 1
+
+5. List all open ports
+
+sudo ss -tulpn // Alternatively: sudo netstat -tulpn | grep LISTEN
+
+6. List the processes:
+
+a) ps aux --sort=%mem | head
+b) ps aux --sort=%cpu | head
+c) I/O usage can be monitored using tools such as iotop, iodump, sysstat ect. In this case, using iotop: sudo iotop -aoP
+
+7. Concatenate several text files and count how many times there is a line containing the separate word "jabra"
+
+cat file1.txt file2.txt | grep -wo "jabra" | wc -w
+
+8. Write two commands. The first one creates directories server0, server1, ..... server9, and the second changes their permissions: user has full access, group can only see what is in the dir, but can't create or delete files, others has no rights
+
+mkdir server{1..9} | chmod 740 server{1..9}
+
+9. Write a command that finds all .txt files under a given folder and copies them to a new location by preserving their paths. For example if the file is located at /oldpath/somewhere/some/file.txt it should be located in /newpath/somewhere/some/file.txt
+
+find . -name '*.txt' | xargs -t cp -p -i --parents {} /newpath/somewhere/some
+
+10. Write a command that counts how many times a given word is encountered in a file.
+
+grep -wo "example" file.txt | wc -w
+
+11. Write a command that counts how many different users own files in directory ./training.
+
+find . -type f -printf %u:%g\\n
+
+12. Write a command that parses the output of ip addr linux command and returns the ip address
+
+ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d:
+
+13. Create user1 and user2 on a Linux machine. They should not be added in any root level access groups.
+
+a) Create a directory test1 in the user1 home directory also create a file/s in it. The permissions should be set so user2 can modify the user1 file/s, create new ones but is unable files owned by user1.
+
+This can be achieved using Sticky bit. The Sticky bit (chmod +t path) can be used on directories where it allows the files or directories within to only be moved or deleted by that objects's owner, the directory owner, or the super user. The Sticky bit is set with 1000 e.g:"chmod 1755 path". 
+
+b) Create a directory test2 in the user1 home directory. The permissions should be set so user2 can create modify files in it but all of the files in the directory that are created by user2 should be created under the user1 group
+
+This can be achieved using Setgid bit. The Setgit bit (chmod g+s path) can be used on a directory so that all files and directories newly created within it inherit the group from that directory. The Setgit bit is set with 2000 e.g:"chmod 2755 path".
+
+14. Create a public git repository with a provider of your choice and upload all the answers using the command line only.
+
+This file as well as the file SQL will be pushed to github :)
+
+
+
+
+
+
